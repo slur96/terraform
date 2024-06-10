@@ -39,7 +39,7 @@ resource "aws_internet_gateway" "gw" {
 
 # NAT Gateway
 resource "aws_eip" "nat_eip" {
-  vpc = true
+  domain = "vpc"
 }
 
 resource "aws_nat_gateway" "nat" {
@@ -110,10 +110,10 @@ resource "aws_security_group" "instance_sg" {
   vpc_id = aws_vpc.main.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    security_groups  = [aws_security_group.alb_sg.id]
   }
 
   egress {
@@ -156,7 +156,7 @@ resource "aws_lb_listener" "http" {
 # Launch Configuration
 resource "aws_launch_configuration" "lc" {
   name          = "my-lc"
-  image_id      = "ami-0cf2b4e024cdb6960" # Ubuntu
+  image_id      = "ami-0cf2b4e024cdb6960" # Amazon Linux 2 AMI
   instance_type = "t2.micro"
   security_groups = [aws_security_group.instance_sg.id]
 
